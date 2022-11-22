@@ -126,7 +126,7 @@
           "announcement-bar-0": {
             "type": "announcement",
             "settings": {
-              "text": "Welcome to our store",
+              "text": "Welcome to our store!",
               "text_alignment": "center",
               "color_scheme": "background-1",
               "link": ""
@@ -158,7 +158,6 @@
       },
       "footer": {
         "type": "footer",
-        
         "blocks": {
           "footer-0": {
             "type": "link_list",
@@ -188,7 +187,6 @@
           "footer-2"
         ],
         "settings": {
-          "logo": "shopify:\/\/shop_images\/529-5291672_sample-logo-png-transparent-background.png",
           "color_scheme": "background-1",
           "newsletter_enable": true,
           "newsletter_heading": "Subscribe to our emails",

@@ -152,7 +152,6 @@ class QuantityInput extends HTMLElement {
     const previousValue = this.input.value;
 
     event.target.name === 'plus' ? this.input.stepUp() : this.input.stepDown();
-    // console.log(this.input.value);
     if (previousValue !== this.input.value) this.input.dispatchEvent(this.changeEvent);
   }
 }
@@ -406,6 +405,7 @@ class MenuDrawer extends HTMLElement {
     window.requestAnimationFrame(handleAnimation);
   }
 }
+
 customElements.define('menu-drawer', MenuDrawer);
 
 class HeaderDrawer extends MenuDrawer {
@@ -490,7 +490,7 @@ class ModalOpener extends HTMLElement {
     const button = this.querySelector('button');
 
     if (!button) return;
-    button.addEventListener('click', () => {
+    button.addEventListener('hover', () => {
       const modal = document.querySelector(this.getAttribute('data-modal'));
       if (modal) modal.show(button);
     });

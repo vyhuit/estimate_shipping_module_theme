@@ -1,0 +1,141 @@
+@font-face {
+  font-family: Poppins;
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("https://fonts.shopifycdn.com/poppins/poppins_i7.4f85a5d51a1aecf426eea47ac4570ef7341bfdc1.woff2?h1=d2FuZGVycHJpbnRzLmNvbQ&h2=ZmFtaWx5ZGVjb3JwcmludHMuY29t&h3=d2FuZGVycHJpbnRzLmNv&h4=d29uZGVycHJpbnRzLmNv&hmac=777c6d5d99008d8fed8af00eebb587dc3148f2dc52e01427e006820dab2bf7d0") format("woff2"), url("https://fonts.shopifycdn.com/poppins/poppins_i7.aff3a08a92d1c136586c611b9fc43d357dfbbefe.woff?h1=d2FuZGVycHJpbnRzLmNvbQ&h2=ZmFtaWx5ZGVjb3JwcmludHMuY29t&h3=d2FuZGVycHJpbnRzLmNv&h4=d29uZGVycHJpbnRzLmNv&hmac=ed40e25d7d6744c2fc8769e6c2296b67638b2f6bd6aab5f5e4c12643ba522a2a") format("woff");
+}
+
+.label-icon {
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.estimate-title {
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  width: 460px;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 30px 20px;
+  top: 25px;
+  left: -50%;
+}
+
+.hover-text:hover .tooltip-text {
+  visibility: visible;
+}
+
+.hover-text {
+  position: relative;
+  display: inline-block;
+  font-family: Avenir;
+  text-align: center;
+  font-weight: bold;
+  color: #000000;
+  padding: 0 6px;
+  border-bottom: 1px dashed black;
+  cursor: pointer;
+}
+
+.est-card {
+  box-shadow: 0 7px 29px 0 hsl(240deg 5% 41% / 20%);
+  background-color: white;
+}
+
+.est-card .shipping-stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.est-card .shipping-stepper .stepper-item {
+  flex-grow: 1;
+  text-align: left;
+  width: 100%;
+  position: relative;
+}
+
+.est-shipping-notice ul {
+  padding-left: 22px;
+}
+
+.est-shipping-notice ul li {
+  font-size: 15px;
+  font-family: Poppins, sans-serif;
+  font-weight: 400;
+  color: #000000;
+  text-align: left;
+  line-height: 1.6em;
+  margin-bottom: 10px;
+}
+
+.est-card .shipping-stepper .stepper-item .stepper-icon {
+  font-size: 14px;
+}
+
+.stepper-item:after {
+  border-bottom: 2px solid #ccc;
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 14px;
+  width: 100%;
+  z-index: 2;
+}
+
+.stepper-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.stepper-item:first-child {
+  align-items: flex-start;
+}
+
+.stepper-item:last-child {
+  align-items: flex-end;
+}
+
+.stepper-item .stepper-icon {
+  align-items: center;
+  background: #ccc;
+  border-radius: 50%;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  margin-bottom: 6px;
+  position: relative;
+  width: 30px;
+  z-index: 5;
+}
+
+.est-card .stepper-item .stepper-content p {
+  text-align: center;
+}
+
+.est-card .shipping-stepper .stepper-item:last-child .stepper-content p {
+  text-align: right;
+}
+
+.est-card .shipping-stepper .stepper-item:first-child .stepper-content p {
+  text-align: left;
+}
+
+.est-card .stepper-item .stepper-content p.time {
+  color: #686868;
+  margin: unset;
+}
+
+.est-card .stepper-item .stepper-content p.time-label {
+  margin: 0 0 24px;
+  font-size: 15px;
+}
