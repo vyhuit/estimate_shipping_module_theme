@@ -1,5 +1,7 @@
 console.log("Zoooo");
 let getData = () => {
+  let productType = window.product.type == "" ? "nonType" : window.product.type;
+  //call api for get the estimated time with above productType
   
 };
 
