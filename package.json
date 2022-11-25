@@ -30,6 +30,7 @@
         "bootstrap": "^5.2.2",
         "file-loader": "^6.2.0",
         "ignore-emit-webpack-plugin": "^2.0.6",
+        "moment": "^2.29.4",
         "react": "^18.2.0",
         "react-bootstrap": "^2.6.0",
         "react-dom": "^18.2.0"

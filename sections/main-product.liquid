@@ -204,67 +204,11 @@
         </div>
         {%- when 'popup' -%}
         {{ 'estimate-shipping-style.min.css' | asset_url | stylesheet_tag }}
-
         <script>
           window.product = {{ product | json }};
         </script>
-
         <div class="eb-estimate-shipping"></div>
-        {%- comment -%} <div class="estimate-title">
-          {% render 'car-shipping' %} &nbsp; Estimate arrival:
-          <span class="hover-text">
-            Nov 21 - Dec 12
-            <div class="tooltip-text est-card">
-              <div class="shipping-stepper">
-                <div class="stepper-item">
-                  <div class="stepper-icon">
-                    {% render 'order-icon' %}
-                  </div>
-                  <div class="stepper-content">
-                    <p class="time">
-                      Nov 22
-                    </p>
-                    <p class="time-label">
-                      Order placed
-                    </p>
-                  </div>
-                </div>
-                <div class="stepper-item">
-                  <div class="stepper-icon">
-                    {% render 'car-shipping' %}
-                  </div>
-                  <div class="stepper-content">
-                    <p class="time">
-                      Nov 24- 25
-                    </p>
-                    <p class="time-label">
-                      Order ship
-                    </p>
-                  </div>
-                </div>
-                <div class="stepper-item">
-                  <div class="stepper-icon">
-                    {% render 'gift-icon' %}
-                  </div>
-                  <div class="stepper-content">
-                    <p class="time">
-                      Nov 28 - Dec 2
-                    </p>
-                    <p class="time-label">
-                      Delivered
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="est-shipping-notice">
-                <ul>
-                  <li>The above time frame is only applied for orders to the US with standard shipping methods.</li>
-                  <li>International orders: It may take 2-5 days longer due to the customs clearance process.</li>
-                </ul>
-              </div>
-            </div>
-          </span>
-        </div> {%- endcomment -%}
+
         <script src="{{ 'estimate-shipping-script.min.js' | asset_url }}" defer></script>
         {%- when 'share' -%}
         <share-button id="Share-{{ section.id }}" class="share-button quick-add-hidden" {{ block.shopify_attributes }}>
