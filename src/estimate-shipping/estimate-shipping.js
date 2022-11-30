@@ -1,23 +1,16 @@
 import moment from "moment";
 import {
     API,
-    EST_CONSTANT,
-    HTMLTAG
+    EST_CONSTANT
 } from "../constants/enum";
-
-const isRequired = (param) => {
-    throw new Error(`${param} param is required`);
-};
 
 let getEstimateTime = async() => {
     let productType = window.product.type == "" ?
-        "nonType" :
+        "default" :
         window.product.type;
     const options = {
+        // mode: 'no-cors',
         method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
         body: JSON.stringify({
             type: productType
         })
@@ -26,12 +19,12 @@ let getEstimateTime = async() => {
         if (res.isSuccess) {
             return res.data.estTime;
         } else {
-            return [];
+            return {};
         }
     });
 };
 
-let createElementWithClassname = (tag = isRequired("nameTag"), ...className) => {
+let createElementWithClassname = (tag, ...className) => {
     let element = document.createElement(tag);
     className.length > 0 && element.classList.add(...className);
     return element;
@@ -44,11 +37,11 @@ let stepperItemGener = (icon, time, label) => {
     const CLASSNAME_TIME_VALUE = "time";
     const CLASSNAME_TIME_LABEL = "time-label";
 
-    let stepperItem = createElementWithClassname(HTMLTAG.DIV, CLASSNAME_STEPPER_ITEM);
-    let stepperContentWrapper = createElementWithClassname(HTMLTAG.DIV, CLASSNAME_STEPPER_CONTENT);
-    let stepperIconWrapper = createElementWithClassname(HTMLTAG.DIV, CLASSNAME_STEPPER_ICON);
-    let timeElement = createElementWithClassname(HTMLTAG.P, CLASSNAME_TIME_VALUE);
-    let labelElement = createElementWithClassname(HTMLTAG.P, CLASSNAME_TIME_LABEL);
+    let stepperItem = createElementWithClassname("div", CLASSNAME_STEPPER_ITEM);
+    let stepperContentWrapper = createElementWithClassname("div", CLASSNAME_STEPPER_CONTENT);
+    let stepperIconWrapper = createElementWithClassname("div", CLASSNAME_STEPPER_ICON);
+    let timeElement = createElementWithClassname("p", CLASSNAME_TIME_VALUE);
+    let labelElement = createElementWithClassname("p", CLASSNAME_TIME_LABEL);
 
     timeElement.append(time);
     labelElement.append(label);
@@ -70,33 +63,35 @@ class EstimateShipping {
     }
 
     initElement() {
-        let wrapper = createElementWithClassname(HTMLTAG.DIV, "estimate-title");
+        let wrapper = createElementWithClassname("div", "estimate-title");
 
-        const OrderLabel = `Today, ${formatEstShippingTime(this.data.orderPlace)}`;
+        const OrderLabel = `Today, ${
+      formatEstShippingTime(this.data.orderPlace)
+    }`;
         const ShippingLabel = `${
-          formatEstShippingTime(this.data.shipping.min)
-        } - ${
-          formatEstShippingTime(this.data.shipping.max)
-        }`;
+      formatEstShippingTime(this.data.shipping.min)
+    } - ${
+      formatEstShippingTime(this.data.shipping.max)
+    }`;
         const DeliveryLabel = `${
-          formatEstShippingTime(this.data.delivery.min)
-        } - ${
-          formatEstShippingTime(this.data.delivery.max)
-        }`;
+      formatEstShippingTime(this.data.delivery.min)
+    } - ${
+      formatEstShippingTime(this.data.delivery.max)
+    }`;
 
-        let carIcon = createElementWithClassname(HTMLTAG.I, "fa", "fa-truck", "label-icon");
-        let orderIcon = createElementWithClassname(HTMLTAG.I, "fa", "fa-handshake-o");
-        let deliveryIcon = createElementWithClassname(HTMLTAG.I, "fa", "fa-gift");
-        let shippingIcon = createElementWithClassname(HTMLTAG.I, "fa", "fa-truck");
+        let carIcon = createElementWithClassname("i", "fa", "fa-truck", "label-icon");
+        let orderIcon = createElementWithClassname("i", "fa", "fa-handshake-o");
+        let deliveryIcon = createElementWithClassname("i", "fa", "fa-gift");
+        let shippingIcon = createElementWithClassname("i", "fa", "fa-truck");
 
         wrapper.append(carIcon);
         wrapper.append(EST_CONSTANT.LABEL_EST);
 
-        let hoverText = createElementWithClassname(HTMLTAG.SPAN, "hover-text");
+        let hoverText = createElementWithClassname("span", "hover-text");
         hoverText.append(DeliveryLabel)
 
-        let popup = createElementWithClassname(HTMLTAG.DIV, "tooltip-text", "est-card");
-        let stepper = createElementWithClassname(HTMLTAG.DIV, "shipping-stepper");
+        let popup = createElementWithClassname("div", "tooltip-text", "est-card");
+        let stepper = createElementWithClassname("div", "shipping-stepper");
 
         let orderStepItem = stepperItemGener(orderIcon, OrderLabel, "Order Placing");
         let shippingStepItem = stepperItemGener(shippingIcon, ShippingLabel, "Order Shipping");
@@ -105,11 +100,11 @@ class EstimateShipping {
         stepper.append(orderStepItem, shippingStepItem, deliveryStepItem);
         popup.append(stepper);
 
-        let noticeWrapper = createElementWithClassname(HTMLTAG.DIV, "est-shipping-notice");
-        let ul = createElementWithClassname(HTMLTAG.UL);
-        let li1 = createElementWithClassname(HTMLTAG.LI);
+        let noticeWrapper = createElementWithClassname("div", "est-shipping-notice");
+        let ul = createElementWithClassname("ul");
+        let li1 = createElementWithClassname("li");
         li1.innerText = EST_CONSTANT.LABEL_NOTICE_1;
-        let li2 = createElementWithClassname(HTMLTAG.LI);
+        let li2 = createElementWithClassname("li");
         li2.innerText = EST_CONSTANT.LABEL_NOTICE_2;
         ul.append(li1, li2);
         noticeWrapper.append(ul);
@@ -134,7 +129,7 @@ let start = async() => {
 
     const estimateShippingEl = document.querySelector(`.${
     EST_CONSTANT.CLASSNAME_ESTIMATE_SHIPPING_INIT
-    }`);
+  }`);
     estimateShippingEl.appendChild(ES.getEls().element)
 };
 
