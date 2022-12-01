@@ -1,47 +1,39 @@
 import moment from "moment";
 import {
     API,
-    EST_CONSTANT
-} from "../constants/enum";
+    EST_CLASSNAME,
+    EST_END_POINTS,
+    EST_VARS,
+    FAS_ICON
+} from "../utils/enum";
 
-let getEstimateTime = async() => {
-    let productType = window.product.type == "" ?
-        "default" :
-        window.product.type;
+const getEstimateTime = async() => {
+    const productType = window.product.type || "default";
     const options = {
-        // mode: 'no-cors',
         method: "POST",
         body: JSON.stringify({
             type: productType
         })
     }
-    return fetch(API + "/product/estimate-shipping", options).then(res => res.json()).then(res => {
-        if (res.isSuccess) {
-            return res.data.estTime;
-        } else {
-            return {};
-        }
+    return fetch(API.EST_API_PRODUCTION + EST_END_POINTS.EST_SHIPPING, options).then(res => res.json()).then(res => {
+        return res.isSuccess ?
+            res.data.estTime : {};
     });
 };
 
-let createElementWithClassname = (tag, ...className) => {
+const createElementWithClassname = (tag, ...className) => {
     let element = document.createElement(tag);
     className.length > 0 && element.classList.add(...className);
     return element;
 };
 
-let stepperItemGener = (icon, time, label) => {
-    const CLASSNAME_STEPPER_ITEM = "stepper-item";
-    const CLASSNAME_STEPPER_CONTENT = "stepper-content";
-    const CLASSNAME_STEPPER_ICON = "stepper-icon";
-    const CLASSNAME_TIME_VALUE = "time";
-    const CLASSNAME_TIME_LABEL = "time-label";
+const generateStepperItem = (icon, time, label) => {
 
-    let stepperItem = createElementWithClassname("div", CLASSNAME_STEPPER_ITEM);
-    let stepperContentWrapper = createElementWithClassname("div", CLASSNAME_STEPPER_CONTENT);
-    let stepperIconWrapper = createElementWithClassname("div", CLASSNAME_STEPPER_ICON);
-    let timeElement = createElementWithClassname("p", CLASSNAME_TIME_VALUE);
-    let labelElement = createElementWithClassname("p", CLASSNAME_TIME_LABEL);
+    let stepperItem = createElementWithClassname("div", EST_CLASSNAME.STEPPER_ITEM);
+    let stepperContentWrapper = createElementWithClassname("div", EST_CLASSNAME.STEPPER_CONTENT);
+    let stepperIconWrapper = createElementWithClassname("div", EST_CLASSNAME.STEPPER_ICON);
+    let timeElement = createElementWithClassname("p", EST_CLASSNAME.TIME_VALUE);
+    let labelElement = createElementWithClassname("p", EST_CLASSNAME.TIME_LABEL);
 
     timeElement.append(time);
     labelElement.append(label);
@@ -52,7 +44,43 @@ let stepperItemGener = (icon, time, label) => {
     return stepperItem;
 };
 
-let formatEstShippingTime = (time) => {
+const generateEstPopup = ({
+    orderPlace,
+    shipping,
+    delivery
+}) => {
+    const OrderLabel = `Today, ${formatEstTime(orderPlace)}`;
+    const ShippingLabel = `${formatEstTime(shipping.min)} - ${formatEstTime(shipping.max)}`;
+    const DeliveryLabel = `${formatEstTime(delivery.min)} - ${formatEstTime(delivery.max)}`;
+
+    let orderIcon = createElementWithClassname("i", FAS_ICON.FA_DEFAULT_CLASS, FAS_ICON.FA_HANDSHAKE_O);
+    let deliveryIcon = createElementWithClassname("i", FAS_ICON.FA_DEFAULT_CLASS, FAS_ICON.FA_GIFT);
+    let shippingIcon = createElementWithClassname("i", FAS_ICON.FA_DEFAULT_CLASS, FAS_ICON.FA_TRUCK);
+
+    let popup = createElementWithClassname("div", EST_CLASSNAME.POPUP, EST_CLASSNAME.EST_CARD);
+    let stepper = createElementWithClassname("div", EST_CLASSNAME.STEEPR_CONTAINER);
+
+    let orderStepItem = generateStepperItem(orderIcon, OrderLabel, EST_VARS.ORDER_LABEL);
+    let shippingStepItem = generateStepperItem(shippingIcon, ShippingLabel, EST_VARS.SHIPPING_LABEL);
+    let deliveryStepItem = generateStepperItem(deliveryIcon, DeliveryLabel, EST_VARS.DELIVERY_LABEL);
+
+    stepper.append(orderStepItem, shippingStepItem, deliveryStepItem);
+    popup.append(stepper);
+
+    let noticeWrapper = createElementWithClassname("div", EST_CLASSNAME.EST_CARD_NOTICE);
+    let ul = createElementWithClassname("ul");
+    let li1 = createElementWithClassname("li");
+    li1.innerText = EST_VARS.LABEL_NOTICE_1;
+    let li2 = createElementWithClassname("li");
+    li2.innerText = EST_VARS.LABEL_NOTICE_2;
+    ul.append(li1, li2);
+    noticeWrapper.append(ul);
+
+    popup.append(noticeWrapper);
+    return popup;
+}
+
+const formatEstTime = (time) => {
     return moment(time).format("ll").split(", ")[0];
 };
 
@@ -60,77 +88,44 @@ class EstimateShipping {
     constructor(data) {
         this.data = data;
         this.element = null;
-    }
+    };
 
     initElement() {
-        let wrapper = createElementWithClassname("div", "estimate-title");
-
-        const OrderLabel = `Today, ${
-      formatEstShippingTime(this.data.orderPlace)
-    }`;
-        const ShippingLabel = `${
-      formatEstShippingTime(this.data.shipping.min)
-    } - ${
-      formatEstShippingTime(this.data.shipping.max)
-    }`;
-        const DeliveryLabel = `${
-      formatEstShippingTime(this.data.delivery.min)
-    } - ${
-      formatEstShippingTime(this.data.delivery.max)
-    }`;
-
-        let carIcon = createElementWithClassname("i", "fa", "fa-truck", "label-icon");
-        let orderIcon = createElementWithClassname("i", "fa", "fa-handshake-o");
-        let deliveryIcon = createElementWithClassname("i", "fa", "fa-gift");
-        let shippingIcon = createElementWithClassname("i", "fa", "fa-truck");
+        const {
+            orderPlace,
+            shipping,
+            delivery
+        } = this.data;
+        let wrapper = createElementWithClassname("div", EST_CLASSNAME.ROOT_TEXT);
+        let carIcon = createElementWithClassname("i", FAS_ICON.FA_DEFAULT_CLASS, FAS_ICON.FA_TRUCK, EST_CLASSNAME.ROOT_TEXT_ICON);
 
         wrapper.append(carIcon);
-        wrapper.append(EST_CONSTANT.LABEL_EST);
+        wrapper.append(EST_VARS.ROOT_HOVER_LABEL);
 
-        let hoverText = createElementWithClassname("span", "hover-text");
-        hoverText.append(DeliveryLabel)
-
-        let popup = createElementWithClassname("div", "tooltip-text", "est-card");
-        let stepper = createElementWithClassname("div", "shipping-stepper");
-
-        let orderStepItem = stepperItemGener(orderIcon, OrderLabel, "Order Placing");
-        let shippingStepItem = stepperItemGener(shippingIcon, ShippingLabel, "Order Shipping");
-        let deliveryStepItem = stepperItemGener(deliveryIcon, DeliveryLabel, "Order delivering");
-
-        stepper.append(orderStepItem, shippingStepItem, deliveryStepItem);
-        popup.append(stepper);
-
-        let noticeWrapper = createElementWithClassname("div", "est-shipping-notice");
-        let ul = createElementWithClassname("ul");
-        let li1 = createElementWithClassname("li");
-        li1.innerText = EST_CONSTANT.LABEL_NOTICE_1;
-        let li2 = createElementWithClassname("li");
-        li2.innerText = EST_CONSTANT.LABEL_NOTICE_2;
-        ul.append(li1, li2);
-        noticeWrapper.append(ul);
-
-        popup.append(noticeWrapper);
+        let hoverText = createElementWithClassname("span", EST_CLASSNAME.ROOT_HOVER_TEXT);
+        hoverText.append(`${formatEstTime(delivery.min)} - ${formatEstTime(delivery.max)}`)
+        let popup = generateEstPopup({
+            orderPlace,
+            shipping,
+            delivery
+        });
         hoverText.append(popup);
         wrapper.append(hoverText);
         this.element = wrapper;
     }
 
     getEls() {
-        return {
-            element: this.element
-        }
+        return this.element
     }
 }
 
-let start = async() => {
+const start = async() => {
     let dataEst = await getEstimateTime();
     let ES = new EstimateShipping(dataEst);
     ES.initElement();
 
-    const estimateShippingEl = document.querySelector(`.${
-    EST_CONSTANT.CLASSNAME_ESTIMATE_SHIPPING_INIT
-  }`);
-    estimateShippingEl.appendChild(ES.getEls().element)
+    const estimateShippingEl = document.querySelector(`.${EST_CLASSNAME.ROOT_ITEM}`);
+    estimateShippingEl.appendChild(ES.getEls())
 };
 
 start()
